@@ -1,5 +1,5 @@
 //
-//  DishListViewModel.swift
+//  IngredientListViewModel.swift
 //  What'sForDinner
 //
 //  Created by Thibault Giraudon on 20/01/2026.
@@ -9,21 +9,21 @@ import Foundation
 import Combine
 import CoreData
 
-class DishListViewModel: ObservableObject {
-    @Published var dishes: [Dish] = []
+class IngredientListViewModel: ObservableObject {
+    @Published var ingredients: [Ingredient] = []
     
     private let viewContext: NSManagedObjectContext
-    private let dishRepository: DishRepository
+    private let ingredientRepository: IngredientRepository
     
     init(viewContext: NSManagedObjectContext = PersistenceController.shared.container.viewContext) {
         self.viewContext = viewContext
-        self.dishRepository = DishRepository(viewContext: viewContext)
-        self.getDishes()
+        self.ingredientRepository = IngredientRepository(viewContext: viewContext)
+        self.fetchIngredients()
     }
     
-    func getDishes() {
+    func fetchIngredients() {
         do {
-            self.dishes = try dishRepository.getDishes()
+            self.ingredients = try ingredientRepository.getIngredients()
         } catch {
             print(error.localizedDescription)
         }

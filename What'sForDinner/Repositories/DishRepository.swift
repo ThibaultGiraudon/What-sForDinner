@@ -21,14 +21,14 @@ struct DishRepository {
         return try viewContext.fetch(request)
     }
     
-    func addDish(dish: Dish) throws {
+    func addDish(name: String, ingredients: [Ingredient], categories: [Category], time: Int, link: String?, note: String?) throws {
         let newDish = Dish(context: viewContext)
-        newDish.name = dish.name
-        newDish.ingredients = dish.ingredients
-        newDish.categories = dish.categories
-        newDish.time = dish.time
-        newDish.link = dish.link
-        newDish.note = dish.note
+        newDish.name = name
+        newDish.ingredients = NSSet(array: ingredients)
+        newDish.categories = NSSet(array: categories)
+        newDish.time = Int16(time)
+        newDish.link = link
+        newDish.note = note
         try viewContext.save()
     }
 }

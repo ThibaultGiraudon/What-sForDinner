@@ -1,5 +1,5 @@
 //
-//  DishListViewModel.swift
+//  AddCategoryViewModel.swift
 //  What'sForDinner
 //
 //  Created by Thibault Giraudon on 20/01/2026.
@@ -9,21 +9,20 @@ import Foundation
 import Combine
 import CoreData
 
-class DishListViewModel: ObservableObject {
-    @Published var dishes: [Dish] = []
+class AddCategoryViewModel: ObservableObject {
+    @Published var name: String = ""
     
     private let viewContext: NSManagedObjectContext
-    private let dishRepository: DishRepository
+    private let categoryRepository: CategoryRepository
     
     init(viewContext: NSManagedObjectContext = PersistenceController.shared.container.viewContext) {
         self.viewContext = viewContext
-        self.dishRepository = DishRepository(viewContext: viewContext)
-        self.getDishes()
+        self.categoryRepository = CategoryRepository(viewContext: viewContext)
     }
     
-    func getDishes() {
+    func addCategory() {
         do {
-            self.dishes = try dishRepository.getDishes()
+            try categoryRepository.addCategory(name: name)
         } catch {
             print(error.localizedDescription)
         }
