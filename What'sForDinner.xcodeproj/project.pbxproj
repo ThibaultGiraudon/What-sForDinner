@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		CE2755FD2F1F736000BB378D /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = CE2755FC2F1F736000BB378D /* README.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		CE2755E92F1F72DB00BB378D /* What'sForDinner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "What'sForDinner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE2755FC2F1F736000BB378D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -34,6 +39,7 @@
 			children = (
 				CE2755EB2F1F72DB00BB378D /* What'sForDinner */,
 				CE2755EA2F1F72DB00BB378D /* Products */,
+				CE2755FC2F1F736000BB378D /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -109,6 +115,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE2755FD2F1F736000BB378D /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
