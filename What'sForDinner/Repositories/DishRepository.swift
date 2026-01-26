@@ -21,7 +21,7 @@ struct DishRepository {
         return try viewContext.fetch(request)
     }
     
-    func addDish(name: String, ingredients: [Ingredient], categories: [Category], time: Int, link: String?, note: String?) throws {
+    func addDish(name: String, ingredients: [Ingredient], categories: [Category], time: Int, link: String?, note: String?, imageData: Data?) throws {
         let newDish = Dish(context: viewContext)
         newDish.name = name
         newDish.ingredients = NSSet(array: ingredients)
@@ -29,6 +29,7 @@ struct DishRepository {
         newDish.time = Int16(time)
         newDish.link = link
         newDish.note = note
+        newDish.imageData = imageData
         try viewContext.save()
     }
 }

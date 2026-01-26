@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
-import CoreData
+import PhotosUI
 
 struct AddDishView: View {
     @StateObject private var addDishVM = AddDishViewModel()
+    @State private var selectedItem: PhotosPickerItem?
     var body: some View {
         Form {
             Section {
@@ -31,6 +32,32 @@ struct AddDishView: View {
                 TextField("Temps total", text: $addDishVM.timeString)
                     .keyboardType(.numberPad)
             }
+            
+            Section("Image (optionnel)") {
+                PhotosPicker(selection: $selectedItem) {
+                    if let imageData = addDishVM.imageData, let uiImage = UIImage(data: imageData) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFit()
+                        Button("Delete", systemImage: "trash", role: .destructive) {
+                            addDishVM.imageData = nil
+                        }
+                        .tint(.red)
+                    } else {
+                        Image("recipes-placeholder")
+                            .resizable()
+                            .scaledToFit()
+                    }
+                }
+                    .onChange(of: selectedItem) { _, newValue in
+                        Task {
+                            if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                                addDishVM.imageData = data
+                            }
+                        }
+                    }
+            }
+            
             Section("Lien (optionnel)") {
                 TextField("https://...", text: $addDishVM.link)
             }
@@ -41,6 +68,7 @@ struct AddDishView: View {
                 .multilineTextAlignment(.leading)
             }
         }
+        .navigationTitle("Ajouter un plat")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Add") {

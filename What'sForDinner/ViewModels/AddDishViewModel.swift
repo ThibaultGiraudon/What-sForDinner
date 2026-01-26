@@ -16,6 +16,7 @@ class AddDishViewModel: ObservableObject {
     @Published var timeString: String = ""
     @Published var link: String = ""
     @Published var note: String = ""
+    @Published var imageData: Data?
     
     var shouldDisable: Bool {
         if name.isEmpty || ingredients.isEmpty || categories.isEmpty {
@@ -49,7 +50,8 @@ class AddDishViewModel: ObservableObject {
                 categories: categories,
                 time: time,
                 link: link.isEmpty ? nil : link,
-                note: note.isEmpty ? nil : note
+                note: note.isEmpty ? nil : note,
+                imageData: imageData
             )
         } catch {
             print(error.localizedDescription)
