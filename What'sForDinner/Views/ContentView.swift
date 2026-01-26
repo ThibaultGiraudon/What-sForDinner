@@ -14,11 +14,12 @@ struct ContentView: View {
         NavigationStack {
             List {
                 ForEach(dishListVM.dishes, id: \.self) { dish in
-                    Text(dish.name ?? "")
+                    NavigationLink {
+                        DishDetailView(dishListVM: dishListVM, dish: dish)
+                    } label: {
+                        DishRowView(dish: dish)
+                    }
                 }
-            }
-            .onAppear {
-                dishListVM.getDishes()
             }
             .navigationTitle("All dishes")
             .toolbar {
@@ -30,6 +31,9 @@ struct ContentView: View {
                     }
                 }
             }
+        }
+        .onAppear {
+            dishListVM.getDishes()
         }
     }
 }
