@@ -13,37 +13,30 @@ struct AddDishView: View {
     var body: some View {
         Form {
             Section {
-                TextField("Name", text: $addDishVM.name)
+                TextField("Nom", text: $addDishVM.name)
                     .font(.title)
                 
                 NavigationLink {
                     IngredientsPickerView(selection: $addDishVM.ingredients)
                 } label: {
-                    Text("Ingredients")
+                    Text("Ingrédients")
                 }
                 
                 NavigationLink {
                     CategoriesPickerView(selection: $addDishVM.categories)
                 } label: {
-                    Text("Categories")
+                    Text("Catégories")
                 }
                 
-                TextField("Total time", value: $addDishVM.time, format: .number)
+                TextField("Temps total", text: $addDishVM.timeString)
+                    .keyboardType(.numberPad)
             }
-            Section {
-                TextField("Link to recipe", text: Binding(get: {
-                    addDishVM.link ?? ""
-                }, set: {
-                    addDishVM.link = $0.isEmpty ? nil : $0
-                }))
+            Section("Lien (optionnel)") {
+                TextField("https://...", text: $addDishVM.link)
             }
             
             Section {
-                TextField("Note", text: Binding(get: {
-                    addDishVM.note ?? ""
-                }, set: {
-                    addDishVM.note = $0
-                }), axis: .vertical)
+                TextField("Ajouter une note (optionnel)", text: $addDishVM.note, axis: .vertical)
                 .lineLimit(5...10)
                 .multilineTextAlignment(.leading)
             }

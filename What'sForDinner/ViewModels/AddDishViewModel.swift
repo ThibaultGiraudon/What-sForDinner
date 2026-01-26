@@ -13,19 +13,17 @@ class AddDishViewModel: ObservableObject {
     @Published var name: String = ""
     @Published var ingredients: [Ingredient] = []
     @Published var categories: [Category] = []
-    @Published var time: Int = 0
-    @Published var link: String?
-    @Published var note: String?
+    @Published var timeString: String = ""
+    @Published var link: String = ""
+    @Published var note: String = ""
     
     var shouldDisable: Bool {
         if name.isEmpty || ingredients.isEmpty || categories.isEmpty {
             return true
         }
         
-        if let link {
-            if URL(string: link) == nil {
-                return true
-            }
+        if URL(string: link) == nil {
+            return true
         }
         
         return false
@@ -41,13 +39,17 @@ class AddDishViewModel: ObservableObject {
     
     func addDish() {
         do {
+            guard let time = Int(timeString) else {
+                print("Time should be an int")
+                return
+            }
             try dishRepository.addDish(
                 name: name,
                 ingredients: ingredients,
                 categories: categories,
                 time: time,
-                link: link,
-                note: note
+                link: link.isEmpty ? nil : link,
+                note: note.isEmpty ? nil : note
             )
         } catch {
             print(error.localizedDescription)
