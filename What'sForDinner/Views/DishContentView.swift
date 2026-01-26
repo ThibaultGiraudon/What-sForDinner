@@ -14,26 +14,28 @@ struct DishContentView: View {
         VStack(alignment: .leading) {
             Text(dish.nameValue)
                 .font(.title)
+            
             HStack {
-                HStack {
-                    Image(systemName: "timer")
-                    Text("\(dish.time) min")
-                }
-                .padding(5)
-                .background {
-                    Capsule()
-                        .foregroundStyle(Color(UIColor.systemGray5))
-                }
+                Image(systemName: "timer")
+                Text("\(dish.time) min")
+            }
+            .padding(5)
+            .background {
+                Capsule()
+                    .foregroundStyle(Color(UIColor.systemGray5))
+            }
+            
+            ScrollView(.horizontal) {
                 ForEach(dish.categoriesValue, id: \.self) { category in
-                    Text(category.nameValue)
+                    Text("\(category.emojiValue) \(category.nameValue)")
                         .padding(5)
                         .background {
                             Capsule()
-                                .foregroundStyle(Color(UIColor.systemGray5))
+                                .foregroundStyle(category.colorValue.opacity(0.8))
                         }
                 }
-                Spacer()
             }
+            
             VStack(alignment: .leading) {
                 Text("Ingredients")
                     .padding(.vertical)
