@@ -8,4 +8,9 @@
 import Foundation
 import CoreData
 
-class Category: NSManagedObject { }
+class Category: NSManagedObject {
+    var nameValue: String {
+        assert(name != nil, "Dish.name should note be nil")
+        return name ?? ""
+    }
+}
