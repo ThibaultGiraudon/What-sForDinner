@@ -21,9 +21,11 @@ struct CategoryRepository {
         return try viewContext.fetch(request)
     }
     
-    func addCategory(name: String) throws {
+    func addCategory(name: String, emoji: String, color: String) throws {
         let newCategory = Category(context: viewContext)
         newCategory.name = name
+        newCategory.emoji = emoji
+        newCategory.color = color
         try viewContext.save()
     }
 }

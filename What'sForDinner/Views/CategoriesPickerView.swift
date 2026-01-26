@@ -12,18 +12,22 @@ struct CategoriesPickerView: View {
     @StateObject private var addCategoryVM = AddCategoryViewModel()
     @StateObject private var categoryListVM = CategoryListViewModel()
     var body: some View {
-        List {
+        List {            
             ForEach(categoryListVM.categories, id: \.self) { category in
                 HStack {
-                    if selection.contains(category) {
-                        Image(systemName: "largecircle.fill.circle")
-                            .foregroundStyle(.blue)
-                    } else {
-                        Image(systemName: "circle")
-                            .foregroundStyle(.gray)
-                    }
+                    Text(category.emojiValue)
+                        .padding(5)
+                        .background {
+                            if selection.contains(category) {
+                                Circle()
+                                    .fill(category.colorValue)
+                            } else {
+                                Circle()
+                                    .stroke(category.colorValue, lineWidth: 1)
+                            }
+                        }
                     
-                    Text(category.name ?? "")
+                    Text(category.nameValue)
                     Spacer()
                 }
                 .contentShape(Rectangle())
@@ -35,27 +39,26 @@ struct CategoriesPickerView: View {
                     }
                 }
             }
-            HStack {
-                TextField("Add new category", text: $addCategoryVM.name)
-                    .onSubmit {
-                        addCategory()
-                    }
-                Button("Add") {
-                    addCategory()
+        }
+        .onAppear {
+            
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink {
+                    AddCategoryView()
+                } label: {
+                    Label("Add", systemImage: "plus")
                 }
-                .buttonStyle(.glass)
+
             }
         }
-    }
-    
-    func addCategory() {
-        addCategoryVM.addCategory()
-        categoryListVM.fetchCategories()
-        addCategoryVM.name = ""
     }
 }
 
 #Preview {
     @Previewable @State var selection: [Category] = []
-    CategoriesPickerView(selection: $selection)
+    NavigationStack {
+        CategoriesPickerView(selection: $selection)
+    }
 }
