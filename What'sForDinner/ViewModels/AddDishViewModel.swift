@@ -23,7 +23,7 @@ class AddDishViewModel: ObservableObject {
             return true
         }
         
-        if URL(string: link) == nil {
+        if !link.isEmpty && URL(string: link) == nil {
             return true
         }
         

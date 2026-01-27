@@ -21,6 +21,8 @@ struct DefaultData {
     var category: Category {
         let category = Category(context: viewContext)
         category.name = "Plat chaud"
+        category.emoji = "🍽️"
+        category.color = "orange"
         return category
     }
     

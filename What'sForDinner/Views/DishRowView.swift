@@ -14,7 +14,13 @@ struct DishRowView: View {
             if let imageData = dish.imageData, let uiImage = UIImage(data: imageData) {
                 Image(uiImage: uiImage)
                     .resizable()
-                    .aspectRatio(contentMode: .fit)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 60, height: 60)
+                    .clipShape(Circle())
+            } else {
+                Image("recipes-placeholder")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
                     .frame(width: 60, height: 60)
                     .clipShape(Circle())
             }
@@ -28,7 +34,12 @@ struct DishRowView: View {
                 .font(.footnote)
                 .foregroundStyle(.gray)
             }
+            Spacer()
+            Image(systemName: "chevron.right")
+                .font(.title)
+                .foregroundStyle(.gray)
         }
+        .foregroundStyle(.black)
     }
 }
 

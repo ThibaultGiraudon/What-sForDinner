@@ -12,6 +12,10 @@ import CoreData
 class DishListViewModel: ObservableObject {
     @Published var dishes: [Dish] = []
     
+    @Published var selectedCategories: [Category] = []
+    @Published var selectedIngredients: [Ingredient] = []
+    @Published var randomDish: Dish?
+    
     private let viewContext: NSManagedObjectContext
     private let dishRepository: DishRepository
     
@@ -27,5 +31,36 @@ class DishListViewModel: ObservableObject {
         } catch {
             print(error.localizedDescription)
         }
+    }
+    
+    func dishes(in category: Category) -> [Dish] {
+        dishes.filter( { $0.categories?.contains(category) ?? false })
+    }
+    
+    func getRandomDish() {
+        if selectedCategories.isEmpty && selectedIngredients.isEmpty {
+            randomDish = dishes.randomElement()
+            return
+        }
+        let filteredDishes = dishes.filter { dish in
+            let dishIngredients = Set(dish.ingredients as? Set<Ingredient> ?? [])
+            let dishCategories = Set(dish.categories as? Set<Category> ?? [])
+            
+            let hasAllIngredients =
+            selectedIngredients.allSatisfy { dishIngredients.contains($0) }
+            
+            let hasAtLeastOneCategory =
+            selectedCategories.isEmpty
+            || selectedCategories.contains { dishCategories.contains($0) }
+            
+            return hasAllIngredients && hasAtLeastOneCategory
+        }
+        
+        guard !filteredDishes.isEmpty else {
+            randomDish = nil
+            return
+        }
+        
+        randomDish = filteredDishes.randomElement()
     }
 }

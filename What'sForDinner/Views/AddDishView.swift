@@ -9,6 +9,8 @@ import SwiftUI
 import PhotosUI
 
 struct AddDishView: View {
+    @Environment(\.dismiss) var dismiss
+    
     @StateObject private var addDishVM = AddDishViewModel()
     @State private var selectedItem: PhotosPickerItem?
     var body: some View {
@@ -73,6 +75,7 @@ struct AddDishView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Add") {
                     addDishVM.addDish()
+                    dismiss()
                 }
                 .disabled(addDishVM.shouldDisable)
             }
