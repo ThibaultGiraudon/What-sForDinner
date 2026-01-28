@@ -11,7 +11,6 @@ struct AddCategoryView: View {
     @Environment(\.dismiss) var dismiss
     
     @StateObject private var addCategoryVM = AddCategoryViewModel()
-    let colors: [Color] = [.gray, .green, .teal, .blue, .indigo, .purple, .pink , .red, .orange, .yellow]
     var body: some View {
         VStack(alignment: .center) {
             
@@ -22,19 +21,20 @@ struct AddCategoryView: View {
                 .padding(10)
                 .background {
                     Circle()
-                        .fill(addCategoryVM.color)
+                        .fill(addCategoryVM.selectedColor.color)
                 }
                 .onChange(of: addCategoryVM.emoji) { _, newValue in
                     addCategoryVM.emoji = String(newValue.prefix(1))
                 }
+                .padding(.bottom)
             Form {
                 Section("Couleur") {
                     HStack {
-                        ForEach(colors, id: \.self) { color in
-                            Image(systemName: addCategoryVM.color == color ? "largecircle.fill.circle" : "circle")
-                                .foregroundStyle(color)
+                        ForEach(CategoryColor.allCases, id: \.self) { color in
+                            Image(systemName: addCategoryVM.selectedColor == color ? "largecircle.fill.circle" : "circle")
+                                .foregroundStyle(color.color)
                                 .onTapGesture {
-                                    addCategoryVM.color = color
+                                    addCategoryVM.selectedColor = color
                                 }
                                 .frame(maxWidth: .infinity, alignment: .center)
                         }
@@ -49,10 +49,24 @@ struct AddCategoryView: View {
         .toolbar {
             ToolbarItem {
                 Button("Ajouter") {
-                    addCategoryVM.addCategory()
-                    dismiss()
+                    if addCategoryVM.addCategory() {
+                        dismiss()
+                    }
                 }
+                .disabled(addCategoryVM.shouldDisable)
             }
+        }
+        .overlay(alignment: .bottom) {
+            if case .validation(let message) = addCategoryVM.appError {
+                Text(message)
+                    .foregroundColor(.red)
+            }
+        }
+        .alert(item: $addCategoryVM.appError) { error in
+            Alert(
+                title: Text("Erreur"),
+                message: Text(error.message)
+            )
         }
     }
 }
