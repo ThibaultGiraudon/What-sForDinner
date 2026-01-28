@@ -57,8 +57,6 @@ struct ContentView: View {
                     
                     Button {
                         dishListVM.getRandomDish()
-                        print("Tapped")
-                        print(dishListVM.randomDish ?? "Failed to find dish")
                     } label: {
                         Text("Rechercher")
                             .foregroundStyle(.white)
