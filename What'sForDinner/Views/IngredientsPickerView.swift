@@ -11,6 +11,21 @@ struct IngredientsPickerView: View {
     @Binding var selection: [Ingredient]
     @StateObject private var addIngredientVM = AddIngredientViewModel()
     @StateObject private var ingredientListVM = IngredientListViewModel()
+    
+    private var persistenceErrorBinding: Binding<AppError?> {
+        Binding<AppError?>(
+            get: {
+                if case .persistence = addIngredientVM.appError {
+                    return addIngredientVM.appError
+                }
+                return nil
+            },
+            set: { _ in
+                addIngredientVM.appError = nil
+            }
+        )
+    }
+
     var body: some View {
         List {
             ForEach(ingredientListVM.ingredients, id: \.self) { ingredient in
@@ -38,20 +53,41 @@ struct IngredientsPickerView: View {
             HStack {
                 TextField("Add new ingredient", text: $addIngredientVM.name)
                     .onSubmit {
-                        addIngredient()
+                        if !addIngredientVM.shouldDisable {
+                            addIngredient()
+                        }
                     }
                 Button("Add") {
                     addIngredient()
                 }
+//                .disabled(addIngredientVM.shouldDisable)
                 .buttonStyle(.glass)
+            }
+        }
+        .alert(item: persistenceErrorBinding) { error in
+                Alert(
+                    title: Text("Error"),
+                    message: Text(error.message)
+                )
+        }
+        .overlay(alignment: .bottom) {
+            if case .validation(let message) = addIngredientVM.appError {
+                Text(message)
+                    .font(.footnote)
+                    .foregroundColor(.red)
+                    .padding(8)
+                    .background(.ultraThinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .padding(.bottom, 8)
             }
         }
     }
     
     func addIngredient() {
-        addIngredientVM.addIngredient()
-        ingredientListVM.fetchIngredients()
-        addIngredientVM.name = ""
+        if addIngredientVM.addIngredient() {
+            ingredientListVM.fetchIngredients()
+            addIngredientVM.name = ""
+        }
     }
 }
 

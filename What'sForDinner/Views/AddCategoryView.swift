@@ -11,6 +11,21 @@ struct AddCategoryView: View {
     @Environment(\.dismiss) var dismiss
     
     @StateObject private var addCategoryVM = AddCategoryViewModel()
+    
+    private var persistenceErrorBinding: Binding<AppError?> {
+        Binding<AppError?>(
+            get: {
+                if case .persistence = addCategoryVM.appError {
+                    return addCategoryVM.appError
+                }
+                return nil
+            },
+            set: { _ in
+                addCategoryVM.appError = nil
+            }
+        )
+    }
+    
     var body: some View {
         VStack(alignment: .center) {
             
@@ -59,10 +74,15 @@ struct AddCategoryView: View {
         .overlay(alignment: .bottom) {
             if case .validation(let message) = addCategoryVM.appError {
                 Text(message)
+                    .font(.footnote)
                     .foregroundColor(.red)
+                    .padding(8)
+                    .background(.ultraThinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .padding(.bottom, 8)
             }
         }
-        .alert(item: $addCategoryVM.appError) { error in
+        .alert(item: persistenceErrorBinding) { error in
             Alert(
                 title: Text("Erreur"),
                 message: Text(error.message)
