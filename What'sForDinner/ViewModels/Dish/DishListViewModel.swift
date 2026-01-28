@@ -16,6 +16,26 @@ class DishListViewModel: ObservableObject {
     @Published var selectedIngredients: [Ingredient] = []
     @Published var randomDish: Dish?
     
+    @Published var searchText: String = ""
+    
+    var filteredDishes: [Dish] {
+        self.dishes
+            .filter { searchText.isEmpty ? true : $0.nameValue.lowercased().contains(searchText.lowercased()) }
+            .filter { dish in
+                let dishIngredients = Set(dish.ingredients as? Set<Ingredient> ?? [])
+                let dishCategories = Set(dish.categories as? Set<Category> ?? [])
+                
+                let hasAllIngredients =
+                selectedIngredients.allSatisfy { dishIngredients.contains($0) }
+                
+                let hasAtLeastOneCategory =
+                selectedCategories.isEmpty
+                || selectedCategories.contains { dishCategories.contains($0) }
+                
+                return hasAllIngredients && hasAtLeastOneCategory
+            }
+    }
+    
     private let viewContext: NSManagedObjectContext
     private let dishRepository: DishRepository
     

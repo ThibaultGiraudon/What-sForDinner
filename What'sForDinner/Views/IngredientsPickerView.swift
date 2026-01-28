@@ -60,7 +60,7 @@ struct IngredientsPickerView: View {
                 Button("Add") {
                     addIngredient()
                 }
-//                .disabled(addIngredientVM.shouldDisable)
+                .disabled(addIngredientVM.shouldDisable)
                 .buttonStyle(.glass)
             }
         }
