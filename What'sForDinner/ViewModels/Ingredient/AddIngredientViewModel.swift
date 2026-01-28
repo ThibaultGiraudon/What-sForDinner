@@ -42,7 +42,7 @@ class AddIngredientViewModel: ObservableObject {
                 return false
             }
             
-            try ingredientRepository.addIngredient(name: name)
+            try ingredientRepository.addIngredient(name: trimmedName)
             return true
         } catch {
             appError = .persistence
