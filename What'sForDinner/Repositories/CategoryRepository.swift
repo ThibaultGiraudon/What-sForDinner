@@ -28,4 +28,9 @@ struct CategoryRepository {
         newCategory.color = color
         try viewContext.save()
     }
+    
+    func delete(_ category: Category) throws {
+        viewContext.delete(category)
+        try viewContext.save()
+    }
 }

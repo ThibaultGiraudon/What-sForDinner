@@ -83,4 +83,15 @@ class DishListViewModel: ObservableObject {
         
         randomDish = filteredDishes.randomElement()
     }
+    
+    func delete(_ dish: Dish) {
+        do {
+            try dishRepository.delete(dish)
+            if let index = dishes.firstIndex(where: {$0 == dish}) {
+                dishes.remove(at: index)
+            }
+        } catch {
+            print("Failed to delete dish")
+        }
+    }
 }

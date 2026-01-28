@@ -32,4 +32,9 @@ struct DishRepository {
         newDish.imageData = imageData
         try viewContext.save()
     }
+    
+    func delete(_ dish: Dish) throws {
+        viewContext.delete(dish)
+        try viewContext.save()
+    }
 }

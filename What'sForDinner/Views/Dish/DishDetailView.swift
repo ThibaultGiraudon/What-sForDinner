@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct DishDetailView: View {
+    @Environment(\.dismiss) var dismiss
+    
     @ObservedObject var dishListVM: DishListViewModel
+    @State private var showDeleteAlert: Bool = false
     var dish: Dish
     var body: some View {
         ZStack(alignment: .top) {
@@ -40,6 +43,24 @@ struct DishDetailView: View {
                 }
                 .padding()
             }
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Supprimer", systemImage: "trash", role: .destructive) {
+                    showDeleteAlert = true
+                }
+            }
+        }
+        .alert(Text("Attention"), isPresented: $showDeleteAlert) {
+            Button("Supprimer", role: .destructive) {
+                dishListVM.delete(dish)
+                dismiss()
+            }
+            Button("Annuler", role: .cancel) {
+                
+            }
+        } message: {
+            Text("Êtes-vous bien sûr de vouloir supprimer ce plat ?")
         }
         .ignoresSafeArea(edges: .top)
     }
