@@ -13,6 +13,21 @@ struct AddDishView: View {
     
     @StateObject private var addDishVM = AddDishViewModel()
     @State private var selectedItem: PhotosPickerItem?
+    
+    private var persistenceErrorBinding: Binding<AppError?> {
+        Binding<AppError?>(
+            get: {
+                if case .persistence = addDishVM.appError {
+                    return addDishVM.appError
+                }
+                return nil
+            },
+            set: { _ in
+                addDishVM.appError = nil
+            }
+        )
+    }
+    
     var body: some View {
         Form {
             Section {
@@ -70,12 +85,30 @@ struct AddDishView: View {
                 .multilineTextAlignment(.leading)
             }
         }
+        .overlay(alignment: .bottom) {
+            if case .validation(let message) = addDishVM.appError {
+                Text(message)
+                    .font(.footnote)
+                    .foregroundColor(.red)
+                    .padding(8)
+                    .background(.ultraThinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .padding(.bottom, 8)
+            }
+        }
+        .alert(item: persistenceErrorBinding) { error in
+            Alert(
+                title: Text("Erreur"),
+                message: Text(error.message)
+            )
+        }
         .navigationTitle("Ajouter un plat")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Add") {
-                    addDishVM.addDish()
-                    dismiss()
+                    if addDishVM.addDish() {
+                        dismiss()
+                    }
                 }
                 .disabled(addDishVM.shouldDisable)
             }

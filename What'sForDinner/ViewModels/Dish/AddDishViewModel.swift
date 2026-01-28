@@ -18,12 +18,20 @@ class AddDishViewModel: ObservableObject {
     @Published var note: String = ""
     @Published var imageData: Data?
     
+    @Published var appError: AppError?
+    
+    var trimmedName: String { name.trimmingCharacters(in: .whitespacesAndNewlines)}
+    
     var shouldDisable: Bool {
-        if name.isEmpty || ingredients.isEmpty || categories.isEmpty {
+        if trimmedName.isEmpty || categories.isEmpty {
             return true
         }
         
         if !link.isEmpty && URL(string: link) == nil {
+            return true
+        }
+        
+        if Int(timeString) == nil {
             return true
         }
         
@@ -38,12 +46,23 @@ class AddDishViewModel: ObservableObject {
         self.dishRepository = DishRepository(viewContext: viewContext)
     }
     
-    func addDish() {
+    func addDish() -> Bool {
+        guard let time = Int(timeString), time > 0 else {
+            appError = .validation(message: "Le temps doit être un nombre positif.")
+            return false
+        }
+        
+        guard !trimmedName.isEmpty else {
+            appError = .validation(message: "Le nom ne peut pas être vide.")
+            return false
+        }
+        
+        guard !categories.isEmpty else {
+            appError = .validation(message: "Ajoutez au moins une catégorie.")
+            return false
+        }
+                
         do {
-            guard let time = Int(timeString) else {
-                print("Time should be an int")
-                return
-            }
             try dishRepository.addDish(
                 name: name,
                 ingredients: ingredients,
@@ -54,7 +73,10 @@ class AddDishViewModel: ObservableObject {
                 imageData: imageData
             )
         } catch {
-            print(error.localizedDescription)
+            appError = .persistence
+            return false
         }
+        
+        return true
     }
 }
