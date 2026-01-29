@@ -10,7 +10,6 @@ import CoreData
 
 class Ingredient: NSManagedObject {
     var nameValue: String {
-        assert(name != nil, "Ingredient.name should note be nil")
         return name ?? ""
     }
 }

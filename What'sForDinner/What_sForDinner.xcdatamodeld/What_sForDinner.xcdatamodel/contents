@@ -4,8 +4,9 @@
         <attribute name="color" attributeType="String"/>
         <attribute name="emoji" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isSystem" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
-        <relationship name="dish" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Dish" inverseName="categories" inverseEntity="Dish"/>
+        <relationship name="dishes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Dish" inverseName="categories" inverseEntity="Dish"/>
     </entity>
     <entity name="Dish" representedClassName=".Dish" syncable="YES" codeGenerationType="category">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
@@ -14,12 +15,12 @@
         <attribute name="name" attributeType="String"/>
         <attribute name="note" optional="YES" attributeType="String"/>
         <attribute name="time" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="categories" toMany="YES" deletionRule="Nullify" destinationEntity="Category" inverseName="dish" inverseEntity="Category"/>
-        <relationship name="ingredients" toMany="YES" deletionRule="Nullify" destinationEntity="Ingredient" inverseName="dish" inverseEntity="Ingredient"/>
+        <relationship name="categories" toMany="YES" deletionRule="Nullify" destinationEntity="Category" inverseName="dishes" inverseEntity="Category"/>
+        <relationship name="ingredients" toMany="YES" deletionRule="Nullify" destinationEntity="Ingredient" inverseName="dishes" inverseEntity="Ingredient"/>
     </entity>
     <entity name="Ingredient" representedClassName=".Ingredient" syncable="YES" codeGenerationType="category">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String"/>
-        <relationship name="dish" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Dish" inverseName="ingredients" inverseEntity="Dish"/>
+        <relationship name="dishes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Dish" inverseName="ingredients" inverseEntity="Dish"/>
     </entity>
 </model>

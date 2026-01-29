@@ -9,15 +9,17 @@ import Foundation
 import SwiftUI
 import CoreData
 
+enum SystemCategoryType: String {
+    case junk
+}
+
 class Category: NSManagedObject {
     var nameValue: String {
-        assert(name != nil, "Category.name should note be nil")
         return name ?? ""
     }
     
     var colorValue: Color {
         guard let color else {
-            assertionFailure("Category.colro should not be empty")
             return .blue
         }
         
@@ -48,7 +50,10 @@ class Category: NSManagedObject {
     }
     
     var emojiValue: String {
-        assert(emoji != nil, "Category.emoji should not be empty")
         return emoji ?? "🥩"
+    }
+    
+    var dishesValue: [Dish] {
+        return (dishes as? Set<Dish>)?.sorted(by: { $0.nameValue < $1.nameValue }) ?? []
     }
 }

@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct DishCategoryView: View {
+    @Environment(\.dismiss) var dismiss
+    
     @ObservedObject var dishListVM: DishListViewModel
+    @ObservedObject var categoryListVM: CategoryListViewModel
     var category: Category
+    
+    @State private var showDeleteAlert: Bool = false
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -36,9 +41,28 @@ struct DishCategoryView: View {
                 }
             }
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Supprimer", systemImage: "trash", role: .destructive) {
+                    showDeleteAlert = true
+                }
+                .disabled(category.isSystem)
+            }
+        }
+        .alert(Text("Attention"), isPresented: $showDeleteAlert) {
+            Button("Supprimer", role: .destructive) {
+                categoryListVM.delete(category)
+                dismiss()
+            }
+            Button("Annuler", role: .cancel) {
+                
+            }
+        } message: {
+            Text("Êtes-vous bien sûr de vouloir supprimer cette catégorie ?")
+        }
     }
 }
 
 #Preview {
-    DishCategoryView(dishListVM: .init(), category: DefaultData().category)
+    DishCategoryView(dishListVM: .init(), categoryListVM: .init(), category: DefaultData().category)
 }

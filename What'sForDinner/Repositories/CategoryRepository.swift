@@ -33,4 +33,24 @@ struct CategoryRepository {
         viewContext.delete(category)
         try viewContext.save()
     }
+    
+    func fetchOrCreateSystemCategory() throws -> Category {
+        let request = Category.fetchRequest()
+        request.predicate = NSPredicate(
+            format: "isSystem == YES"
+        )
+
+        if let existing = try viewContext.fetch(request).first {
+            return existing
+        }
+
+        let category = Category(context: viewContext)
+        category.name = "Autres"
+        category.emoji = "📦"
+        category.color = "gray"
+        category.isSystem = true
+
+        try viewContext.save()
+        return category
+    }
 }

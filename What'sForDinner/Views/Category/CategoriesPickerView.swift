@@ -13,7 +13,7 @@ struct CategoriesPickerView: View {
     @StateObject private var categoryListVM = CategoryListViewModel()
     var body: some View {
         List {            
-            ForEach(categoryListVM.categories, id: \.self) { category in
+            ForEach(categoryListVM.categories.filter( { !$0.isSystem }), id: \.self) { category in
                 HStack {
                     Text(category.emojiValue)
                         .padding(5)

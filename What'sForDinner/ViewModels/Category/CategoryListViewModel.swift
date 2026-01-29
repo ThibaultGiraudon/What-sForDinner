@@ -28,4 +28,23 @@ class CategoryListViewModel: ObservableObject {
             print(error.localizedDescription)
         }
     }
+    
+    func delete(_ category: Category) {
+        do {
+            let junk = try categoryRepository.fetchOrCreateSystemCategory()
+
+            for dish in category.dishesValue {
+                dish.removeFromCategories(category)
+                
+                if dish.categoriesValue.isEmpty {
+                    dish.addToCategories(junk)
+                }
+            }
+            
+            try categoryRepository.delete(category)
+            try viewContext.save()
+        } catch {
+            print("Failed to delete category")
+        }
+    }
 }

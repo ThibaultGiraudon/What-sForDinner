@@ -36,6 +36,7 @@ struct HomeView: View {
         .onAppear {
             dishListVM.getDishes()
             dishListVM.getRandomDish()
+            categoryListVM.fetchCategories()
         }
     }
     
@@ -113,7 +114,7 @@ struct HomeView: View {
                 HStack {
                     ForEach(categoryListVM.categories, id: \.self) { category in
                         NavigationLink {
-                            DishCategoryView(dishListVM: dishListVM, category: category)
+                            DishCategoryView(dishListVM: dishListVM, categoryListVM: categoryListVM, category: category)
                         } label: {
                             VStack {
                                 Text(category.emojiValue)
