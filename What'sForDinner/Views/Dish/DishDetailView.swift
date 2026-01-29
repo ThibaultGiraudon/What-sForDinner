@@ -12,7 +12,8 @@ struct DishDetailView: View {
     
     @ObservedObject var dishListVM: DishListViewModel
     @State private var showDeleteAlert: Bool = false
-    var dish: Dish
+    @ObservedObject var dish: Dish
+    
     var body: some View {
         ZStack(alignment: .top) {
             DishImageView(dish: dish)
@@ -50,6 +51,16 @@ struct DishDetailView: View {
                     showDeleteAlert = true
                 }
             }
+            
+            ToolbarSpacer(placement: .topBarTrailing)
+            
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink("Edit") {
+                    AddDishView(addDishVM: .init(dishToUpdate: dish)) { updatedDish in
+//                        dish = updatedDish
+                    }
+                }
+            }
         }
         .alert(Text("Attention"), isPresented: $showDeleteAlert) {
             Button("Supprimer", role: .destructive) {
@@ -67,5 +78,7 @@ struct DishDetailView: View {
 }
 
 #Preview {
-    DishDetailView(dishListVM: DishListViewModel(), dish: DefaultData().dish)
+    NavigationStack {
+        DishDetailView(dishListVM: DishListViewModel(), dish: DefaultData().dish)
+    }
 }

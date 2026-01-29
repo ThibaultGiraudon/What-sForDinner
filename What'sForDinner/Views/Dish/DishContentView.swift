@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DishContentView: View {
     @ObservedObject var dishListVM: DishListViewModel
-    var dish: Dish
+    @ObservedObject var dish: Dish
     var body: some View {
         VStack(alignment: .leading) {
             Text(dish.nameValue)

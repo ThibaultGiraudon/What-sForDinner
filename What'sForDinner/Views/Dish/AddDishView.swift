@@ -11,8 +11,9 @@ import PhotosUI
 struct AddDishView: View {
     @Environment(\.dismiss) var dismiss
     
-    @StateObject private var addDishVM = AddDishViewModel()
+    @StateObject var addDishVM: AddDishViewModel
     @State private var selectedItem: PhotosPickerItem?
+    var save: (Dish) -> ()
     
     private var persistenceErrorBinding: Binding<AppError?> {
         Binding<AppError?>(
@@ -26,6 +27,11 @@ struct AddDishView: View {
                 addDishVM.appError = nil
             }
         )
+    }
+    
+    init(addDishVM: AddDishViewModel = .init(), save: @escaping (Dish) -> () = { _ in  }) {
+        self._addDishVM = StateObject(wrappedValue: addDishVM)
+        self.save = save
     }
     
     var body: some View {
@@ -102,12 +108,19 @@ struct AddDishView: View {
                 message: Text(error.message)
             )
         }
-        .navigationTitle("Ajouter un plat")
+        .navigationTitle("\(addDishVM.dishToUpdate == nil ? "Ajouter" : "Modifier") un plat")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Add") {
-                    if addDishVM.addDish() {
-                        dismiss()
+                Button(addDishVM.dishToUpdate == nil ? "Ajouter" : "Enregistrer") {
+                    if addDishVM.dishToUpdate == nil {
+                        if addDishVM.addDish() {
+                            dismiss()
+                        }
+                    } else if addDishVM.updateDish() {
+                        if let dishToUpdate = addDishVM.dishToUpdate {
+                            save(dishToUpdate)
+                            dismiss()
+                        }
                     }
                 }
                 .disabled(addDishVM.shouldDisable)

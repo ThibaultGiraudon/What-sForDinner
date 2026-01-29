@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DishImageView: View {
-    var dish: Dish
+    @ObservedObject var dish: Dish
     var body: some View {
         if let imageData = dish.imageData, let uiImage = UIImage(data: imageData) {
             Image(uiImage: uiImage)
