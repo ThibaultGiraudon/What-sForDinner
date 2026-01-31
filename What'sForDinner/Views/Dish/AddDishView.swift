@@ -13,7 +13,6 @@ struct AddDishView: View {
     
     @StateObject var addDishVM: AddDishViewModel
     @State private var selectedItem: PhotosPickerItem?
-    var save: (Dish) -> ()
     
     private var persistenceErrorBinding: Binding<AppError?> {
         Binding<AppError?>(
@@ -29,9 +28,8 @@ struct AddDishView: View {
         )
     }
     
-    init(addDishVM: AddDishViewModel = .init(), save: @escaping (Dish) -> () = { _ in  }) {
+    init(addDishVM: AddDishViewModel = .init()) {
         self._addDishVM = StateObject(wrappedValue: addDishVM)
-        self.save = save
     }
     
     var body: some View {
@@ -117,10 +115,7 @@ struct AddDishView: View {
                             dismiss()
                         }
                     } else if addDishVM.updateDish() {
-                        if let dishToUpdate = addDishVM.dishToUpdate {
-                            save(dishToUpdate)
-                            dismiss()
-                        }
+                        dismiss()
                     }
                 }
                 .disabled(addDishVM.shouldDisable)

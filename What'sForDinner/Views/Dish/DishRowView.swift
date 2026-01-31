@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DishRowView: View {
-    var dish: Dish
+    @ObservedObject var dish: Dish
     var body: some View {
         HStack {
             if let imageData = dish.imageData, let uiImage = UIImage(data: imageData) {

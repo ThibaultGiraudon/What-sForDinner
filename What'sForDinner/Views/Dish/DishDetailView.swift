@@ -56,9 +56,7 @@ struct DishDetailView: View {
             
             ToolbarItem(placement: .topBarTrailing) {
                 NavigationLink("Edit") {
-                    AddDishView(addDishVM: .init(dishToUpdate: dish)) { updatedDish in
-//                        dish = updatedDish
-                    }
+                    AddDishView(addDishVM: .init(dishToUpdate: dish))
                 }
             }
         }

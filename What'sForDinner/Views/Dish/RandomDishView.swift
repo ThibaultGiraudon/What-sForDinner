@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RandomDishView: View {
-    var dish: Dish
+    @ObservedObject var dish: Dish
     var body: some View {
         VStack {
             Group {
