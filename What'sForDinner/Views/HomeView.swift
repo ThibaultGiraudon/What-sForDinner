@@ -67,16 +67,18 @@ struct HomeView: View {
                 NavigationLink {
                     IngredientsPickerView(selection: $dishListVM.selectedIngredients)
                 } label: {
-                    if !dishListVM.selectedIngredients.isEmpty {
-                        Image(systemName: "checkmark.circle.fill")
-                    }
-                    Text("Ingrédients")
-                        .padding(3)
-                        .background {
-                            RoundedRectangle(cornerRadius: 5)
-                                .fill(dishListVM.selectedIngredients.isEmpty ? .gray : .teal)
+                    HStack {
+                        if !dishListVM.selectedIngredients.isEmpty {
+                            Image(systemName: "checkmark.circle.fill")
                         }
-                        .foregroundStyle(.white)
+                        Text("Ingrédients")
+                    }
+                    .padding(3)
+                    .background {
+                        RoundedRectangle(cornerRadius: 5)
+                            .fill(dishListVM.selectedIngredients.isEmpty ? .gray : .teal)
+                    }
+                    .foregroundStyle(.white)
                 }
             }
             if let dish = dishListVM.randomDish {
