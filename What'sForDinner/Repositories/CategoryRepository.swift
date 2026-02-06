@@ -29,6 +29,13 @@ struct CategoryRepository {
         try viewContext.save()
     }
     
+    func updateCategory(_ category: Category, name: String, emoji: String, color: String) throws {
+        category.name = name
+        category.emoji = emoji
+        category.color = color
+        try viewContext.save()
+    }
+    
     func delete(_ category: Category) throws {
         viewContext.delete(category)
         try viewContext.save()

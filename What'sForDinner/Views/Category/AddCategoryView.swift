@@ -10,7 +10,7 @@ import SwiftUI
 struct AddCategoryView: View {
     @Environment(\.dismiss) var dismiss
     
-    @StateObject private var addCategoryVM = AddCategoryViewModel()
+    @StateObject private var addCategoryVM: AddCategoryViewModel
     
     private var persistenceErrorBinding: Binding<AppError?> {
         Binding<AppError?>(
@@ -24,6 +24,10 @@ struct AddCategoryView: View {
                 addCategoryVM.appError = nil
             }
         )
+    }
+    
+    init(addCategoryVM: AddCategoryViewModel = .init()) {
+        self._addCategoryVM = StateObject(wrappedValue: addCategoryVM)
     }
     
     var body: some View {
@@ -63,8 +67,12 @@ struct AddCategoryView: View {
         }
         .toolbar {
             ToolbarItem {
-                Button("Ajouter") {
-                    if addCategoryVM.addCategory() {
+                Button(addCategoryVM.categoryToUpdate != nil ? "Modifier" : "Ajouter") {
+                    if addCategoryVM.categoryToUpdate != nil {
+                        if addCategoryVM.updateCategory() {
+                            dismiss()
+                        }
+                    } else if addCategoryVM.addCategory() {
                         dismiss()
                     }
                 }

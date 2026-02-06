@@ -102,7 +102,7 @@ class AddDishViewModel: ObservableObject {
         }
         
         do {
-            let newDish = try dishRepository.updateDish(
+            try dishRepository.updateDish(
                 dish,
                 name: name,
                 ingredients: ingredients,
@@ -112,8 +112,6 @@ class AddDishViewModel: ObservableObject {
                 note: note.isEmpty ? nil : note,
                 imageData: imageData
             )
-            
-            self.dishToUpdate = newDish
         } catch {
             appError = .persistence
             return false

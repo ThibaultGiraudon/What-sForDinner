@@ -33,7 +33,7 @@ struct DishRepository {
         try viewContext.save()
     }
     
-    func updateDish(_ dish: Dish, name: String, ingredients: [Ingredient], categories: [Category], time: Int, link: String?, note: String?, imageData: Data?) throws -> Dish {
+    func updateDish(_ dish: Dish, name: String, ingredients: [Ingredient], categories: [Category], time: Int, link: String?, note: String?, imageData: Data?) throws {
         dish.name = name
         dish.ingredients = NSSet(array: ingredients)
         dish.categories = NSSet(array: categories)
@@ -42,8 +42,6 @@ struct DishRepository {
         dish.note = note
         dish.imageData = imageData
         try viewContext.save()
-        
-        return dish
     }
     
     func delete(_ dish: Dish) throws {

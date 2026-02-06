@@ -44,21 +44,23 @@ class AddCategoryViewModel: ObservableObject {
     }
 
     private let categoryRepository: CategoryRepository
+    
+    var categoryToUpdate: Category?
 
-    init(viewContext: NSManagedObjectContext = PersistenceController.shared.container.viewContext) {
+    init(viewContext: NSManagedObjectContext = PersistenceController.shared.container.viewContext, categoryToUpdate: Category? = nil) {
         self.categoryRepository = CategoryRepository(viewContext: viewContext)
+        if let categoryToUpdate {
+            self.categoryToUpdate = categoryToUpdate
+            self.name = categoryToUpdate.nameValue
+            self.emoji = categoryToUpdate.emojiValue
+            self.selectedColor = CategoryColor.allCases.first(where: { $0.color == categoryToUpdate.colorValue}) ?? .blue
+        }
     }
 
     func addCategory() -> Bool {
         appError = nil
         
-        guard !trimmedName.isEmpty else {
-            appError = .validation(message: "Le nom ne peut pas être vide.")
-            return false
-        }
-        
-        guard !trimmedEmoji.isEmpty else {
-            appError = .validation(message: "L'emoji ne peut pas être vide.")
+        guard checkValue() else {
             return false
         }
         
@@ -73,5 +75,44 @@ class AddCategoryViewModel: ObservableObject {
             appError = .persistence
             return false
         }
+    }
+    
+    func updateCategory() -> Bool {
+        appError = nil
+        
+        guard checkValue() else {
+            return false
+        }
+        
+        guard let category = categoryToUpdate else {
+            self.appError = .validation(message: "Impossible de trouver la catégorie à éditer")
+            return false
+        }
+        
+        do {
+            try categoryRepository.updateCategory(category,
+                name: trimmedName,
+                emoji: trimmedEmoji,
+                color: selectedColor.rawValue
+            )
+            return true
+        } catch {
+            appError = .persistence
+            return false
+        }
+    }
+    
+    private func checkValue() -> Bool {
+        guard !trimmedName.isEmpty else {
+            appError = .validation(message: "Le nom ne peut pas être vide.")
+            return false
+        }
+        
+        guard !trimmedEmoji.isEmpty else {
+            appError = .validation(message: "L'emoji ne peut pas être vide.")
+            return false
+        }
+        
+        return true
     }
 }

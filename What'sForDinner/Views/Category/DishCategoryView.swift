@@ -48,6 +48,15 @@ struct DishCategoryView: View {
                 }
                 .disabled(category.isSystem)
             }
+            ToolbarSpacer(placement: .topBarTrailing)
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink {
+                    AddCategoryView(addCategoryVM: AddCategoryViewModel(categoryToUpdate: category))
+                } label: {
+                    Image(systemName: "square.and.pencil")
+                }
+                .disabled(category.isSystem)
+            }
         }
         .alert(Text("Attention"), isPresented: $showDeleteAlert) {
             Button("Supprimer", role: .destructive) {
@@ -64,5 +73,7 @@ struct DishCategoryView: View {
 }
 
 #Preview {
-    DishCategoryView(dishListVM: .init(), categoryListVM: .init(), category: DefaultData().category)
+    NavigationStack {
+        DishCategoryView(dishListVM: .init(), categoryListVM: .init(), category: DefaultData().category)
+    }
 }
