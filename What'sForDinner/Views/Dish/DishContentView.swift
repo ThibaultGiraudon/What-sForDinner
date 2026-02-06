@@ -10,6 +10,8 @@ import SwiftUI
 struct DishContentView: View {
     @ObservedObject var dishListVM: DishListViewModel
     @ObservedObject var dish: Dish
+    
+    @State private var isExpending: Bool = false
     var body: some View {
         VStack(alignment: .leading) {
             Text(dish.nameValue)
@@ -53,9 +55,38 @@ struct DishContentView: View {
                         .stroke(.gray, lineWidth: 1)
                 }
             }
-            .padding(.bottom, 50)
+            
+            Divider()
+            
+            Text("Note / Préparation")
+            if let note = dish.note, !note.isEmpty {
+                VStack {
+                    Text(note)
+                        .lineLimit(isExpending ? nil : 5)
+                    HStack {
+                        Spacer()
+                        Button {
+                            withAnimation {
+                                isExpending.toggle()
+                            }
+                        } label: {
+                            Text("Voir \(isExpending ? "moins" : "plus")")
+                            Image(systemName: "chevron.right")
+                                .rotationEffect(isExpending ? .degrees(-90) : .zero)
+                        }
+                    }
+                }
+                .padding()
+                .background {
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(.tertiary)
+                }
+            } else {
+                Text("Aucun note displonible pour ce plat")
+            }
         }
         .padding()
+        .padding(.bottom, 50)
         .background {
             RoundedRectangle(cornerRadius: 16)
                 .fill(.white)
@@ -64,5 +95,7 @@ struct DishContentView: View {
 }
 
 #Preview {
-    DishContentView(dishListVM: DishListViewModel(), dish: DefaultData().dish)
+    ScrollView {
+        DishContentView(dishListVM: DishListViewModel(), dish: DefaultData().dish)
+    }
 }

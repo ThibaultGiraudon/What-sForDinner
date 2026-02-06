@@ -45,28 +45,36 @@ struct HomeView: View {
         VStack(alignment: .leading) {
             Text("Plat aléatoire")
                 .fontWeight(.semibold)
-                .padding(.bottom)
+
             HStack {
                 NavigationLink {
                     CategoriesPickerView(selection: $dishListVM.selectedCategories)
                 } label: {
-                    Text("Catégories")
-                        .padding(3)
-                        .background {
-                            RoundedRectangle(cornerRadius: 5)
-                                .fill(.teal)
+                    HStack {
+                        if !dishListVM.selectedCategories.isEmpty {
+                            Image(systemName: "checkmark.circle.fill")
                         }
-                        .foregroundStyle(.white)
+                        Text("Catégories")
+                    }
+                    .padding(3)
+                    .background {
+                        RoundedRectangle(cornerRadius: 5)
+                            .fill(dishListVM.selectedCategories.isEmpty ? .gray : .teal)
+                    }
+                    .foregroundStyle(.white)
                 }
                 
                 NavigationLink {
                     IngredientsPickerView(selection: $dishListVM.selectedIngredients)
                 } label: {
+                    if !dishListVM.selectedIngredients.isEmpty {
+                        Image(systemName: "checkmark.circle.fill")
+                    }
                     Text("Ingrédients")
                         .padding(3)
                         .background {
                             RoundedRectangle(cornerRadius: 5)
-                                .fill(.teal)
+                                .fill(dishListVM.selectedIngredients.isEmpty ? .gray : .teal)
                         }
                         .foregroundStyle(.white)
                 }
@@ -79,7 +87,7 @@ struct HomeView: View {
                         .foregroundStyle(.black)
                 }
             } else {
-                Text("Malheureusement aucun plat ne correspond à vos critères.")
+                Text("Aucun plat ne correspond à vos critères...\nEssayez d'élargir vos filtres")
             }
             
             Button {
