@@ -11,7 +11,7 @@ struct AllDishesView: View {
     @ObservedObject var dishListVM: DishListViewModel
     var body: some View {
         VStack {
-            if dishListVM.dishes.isEmpty {
+            if dishListVM.filteredDishes.isEmpty {
                 Image(systemName: "frying.pan")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -36,19 +36,14 @@ struct AllDishesView: View {
                         }
                 }
             }
-            ForEach(dishListVM.dishes, id: \.self) { dish in
+            ForEach(dishListVM.filteredDishes, id: \.self) { dish in
                 NavigationLink {
                     DishDetailView(dishListVM: dishListVM, dish: dish)
                 } label: {
                     DishRowView(dish: dish)
+                        .shadow(radius: 5)
                 }
-                Divider()
             }
-        }
-        .padding()
-        .background {
-            RoundedRectangle(cornerRadius: 16)
-                .fill(.white)
         }
         .onAppear {
             dishListVM.getDishes()
@@ -57,7 +52,8 @@ struct AllDishesView: View {
 }
 
 #Preview {
-    NavigationStack {
+    return NavigationStack {
         AllDishesView(dishListVM: .init())
+            .padding()
     }
 }

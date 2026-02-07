@@ -37,10 +37,13 @@ struct DishContentView: View {
                         }
                 }
             }
+            .padding(.bottom)
+            
+            Divider()
             
             VStack(alignment: .leading) {
                 Text("Ingredients")
-                    .padding(.vertical)
+                    .font(.title3.bold())
                 Group {
                     ForEach(dish.ingredientsValue, id: \.self) { ingredient in
                         HStack {
@@ -55,35 +58,61 @@ struct DishContentView: View {
                         .stroke(.gray, lineWidth: 1)
                 }
             }
+            .padding(.vertical)
             
             Divider()
             
-            Text("Note / Préparation")
-            if let note = dish.note, !note.isEmpty {
-                VStack {
-                    Text(note)
-                        .lineLimit(isExpending ? nil : 5)
-                    HStack {
-                        Spacer()
-                        Button {
-                            withAnimation {
-                                isExpending.toggle()
-                            }
-                        } label: {
-                            Text("Voir \(isExpending ? "moins" : "plus")")
-                            Image(systemName: "chevron.right")
-                                .rotationEffect(isExpending ? .degrees(-90) : .zero)
+            VStack(alignment: .leading) {
+                HStack {
+                    Text("Note / Préparation")
+                        .font(.title3.bold())
+                    Spacer()
+                    Button {
+                        withAnimation {
+                            isExpending.toggle()
                         }
+                    } label: {
+                        Text("Voir \(isExpending ? "moins" : "plus")")
+                        Image(systemName: "chevron.right")
+                            .rotationEffect(isExpending ? .degrees(90) : .zero)
                     }
                 }
-                .padding()
-                .background {
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(.tertiary)
+                if let note = dish.note, !note.isEmpty {
+                    VStack {
+                        Text(note)
+                            .lineLimit(isExpending ? nil : 5)
+                    }
+                    .padding()
+                    .background {
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(.tertiary)
+                    }
+                } else {
+                    Text("Aucun note displonible pour ce plat")
                 }
-            } else {
-                Text("Aucun note displonible pour ce plat")
             }
+            
+            Spacer()
+            
+            if let link = dish.link, let url = URL(string: link) {
+                let linearGradient = LinearGradient(colors: [.blue, .teal], startPoint: .topLeading, endPoint: .bottomTrailing)
+                Link(destination: url) {
+                    HStack {
+                        Spacer()
+                        Text("Recette")
+                        Spacer()
+                    }
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .padding()
+                    .tint(.white)
+                    .background {
+                        RoundedRectangle(cornerRadius: 12)
+                            .foregroundStyle(linearGradient)
+                    }
+                }
+            }
+            
         }
         .padding()
         .padding(.bottom, 50)

@@ -11,38 +11,55 @@ struct DishRowView: View {
     @ObservedObject var dish: Dish
     var body: some View {
         HStack {
-            if let imageData = dish.imageData, let uiImage = UIImage(data: imageData) {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 60, height: 60)
-                    .clipShape(Circle())
-            } else {
-                Image("recipes-placeholder")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 60, height: 60)
-                    .clipShape(Circle())
+            Group {
+                if let imageData = dish.imageData, let uiImage = UIImage(data: imageData) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFit()
+                } else {
+                    Image("recipes-placeholder")
+                        .resizable()
+                        .scaledToFit()
+                }
             }
+            .aspectRatio(contentMode: .fill)
+            .frame(width: 170, height: 120)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
             VStack(alignment: .leading, spacing: 10) {
                 Text(dish.nameValue)
-                    .fontWeight(.semibold)
+                    .font(.title2)
                 HStack {
                     Image(systemName: "timer")
                     Text("\(dish.time) min")
                 }
+                .padding(.vertical, 3)
+                .padding(.horizontal, 5)
+                .foregroundStyle(.black)
+                .background { Capsule().fill(Color(UIColor.systemGray5)) }
                 .font(.footnote)
-                .foregroundStyle(.gray)
+                
+                if let category = dish.categoriesValue.first {
+                    HStack {
+                        Text(category.emojiValue)
+                        Text(category.nameValue)
+                    }
+                    .padding(.vertical, 3)
+                    .padding(.horizontal, 5)
+                    .foregroundStyle(.black)
+                    .background { Capsule().fill(category.colorValue.opacity(0.8)) }
+                    .font(.footnote)
+                }
             }
             Spacer()
-            Image(systemName: "chevron.right")
-                .font(.title)
-                .foregroundStyle(.gray)
         }
         .foregroundStyle(.black)
+        .background(Color.white)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }
 
 #Preview {
     DishRowView(dish: DefaultData().dish)
+        .frame(maxHeight: .infinity)
+        .background(Color.yellow)
 }

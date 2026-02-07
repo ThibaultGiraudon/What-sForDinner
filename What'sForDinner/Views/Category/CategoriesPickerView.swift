@@ -20,7 +20,7 @@ struct CategoriesPickerView: View {
                         .background {
                             if selection.contains(category) {
                                 Circle()
-                                    .fill(category.colorValue)
+                                    .fill(category.colorValue.opacity(0.8))
                             } else {
                                 Circle()
                                     .stroke(category.colorValue, lineWidth: 1)

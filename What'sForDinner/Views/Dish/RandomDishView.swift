@@ -23,11 +23,13 @@ struct RandomDishView: View {
                 }
             }
             .aspectRatio(contentMode: .fill)
-            .frame(height: 250)
+            .frame(height: 220)
             .clipShape(RoundedRectangle(cornerRadius: 16))
+            .shadow(radius: 5)
             .overlay(alignment: .topLeading) {
                 Text(dish.nameValue)
                     .font(.title)
+                    .foregroundStyle(.black)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 5)
                     .glassEffect()
@@ -50,4 +52,5 @@ struct RandomDishView: View {
 
 #Preview {
     RandomDishView(dish: DefaultData().dish)
+        .padding()
 }
