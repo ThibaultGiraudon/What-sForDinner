@@ -28,7 +28,9 @@ struct IngredientsPickerView: View {
 
     var body: some View {
         List {
-            ForEach(ingredientListVM.ingredients, id: \.self) { ingredient in
+            SearchField(searchText: $ingredientListVM.searchText)
+            
+            ForEach(ingredientListVM.filteredIngredients, id: \.self) { ingredient in
                 HStack {
                     if selection.contains(ingredient) {
                         Image(systemName: "largecircle.fill.circle")

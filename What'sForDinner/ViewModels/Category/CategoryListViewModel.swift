@@ -11,6 +11,13 @@ import CoreData
 
 class CategoryListViewModel: ObservableObject {
     @Published var categories: [Category] = []
+    @Published var searchText: String = ""
+    
+    var filteredCategories: [Category] {
+        self.categories.filter {
+            searchText.isEmpty ? true : $0.nameValue.contains(searchText)
+        }
+    }
     
     private let viewContext: NSManagedObjectContext
     private let categoryRepository: CategoryRepository

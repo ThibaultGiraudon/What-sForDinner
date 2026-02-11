@@ -22,23 +22,7 @@ struct ContentView: View {
                     Text("Tous les plats")
                         .fontWeight(.semibold)
                     
-                    HStack {
-                        Image(systemName: "magnifyingglass")
-                        TextField("Rechercher", text: $dishListVM.searchText)
-                        if !dishListVM.searchText.isEmpty {
-                            Image(systemName: "xmark.circle.fill")
-                                .onTapGesture {
-                                    dishListVM.searchText = ""
-                                }
-                                .foregroundStyle(.gray)
-                        }
-                    }
-                    .padding(5)
-                    .background {
-                        Capsule()
-                            .fill(.gray.opacity(0.2))
-                    }
-                    .padding(.bottom)
+                    SearchField(searchText: $dishListVM.searchText)
                     
                     AllDishesView(dishListVM: dishListVM)
                 }

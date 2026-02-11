@@ -11,6 +11,14 @@ import CoreData
 
 class IngredientListViewModel: ObservableObject {
     @Published var ingredients: [Ingredient] = []
+    @Published var searchText: String = ""
+    
+    var filteredIngredients: [Ingredient] {
+        self.ingredients.filter {
+            searchText.isEmpty ? true : $0.nameValue.contains(searchText)
+            
+        }
+    }
     
     private let viewContext: NSManagedObjectContext
     private let ingredientRepository: IngredientRepository
