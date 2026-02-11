@@ -59,7 +59,7 @@ struct DishRowView: View {
 }
 
 #Preview {
-    DishRowView(dish: DefaultData().dish)
+    DishRowView(dish: DishListViewModel().dishes.first!)
         .frame(maxHeight: .infinity)
         .background(Color.yellow)
 }

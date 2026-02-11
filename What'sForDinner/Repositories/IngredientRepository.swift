@@ -26,4 +26,21 @@ struct IngredientRepository {
         newIngredient.name = name
         try viewContext.save()
     }
+    
+    func fetchOrCreateIngredient(name: String) throws -> Ingredient {
+        let request = Ingredient.fetchRequest()
+        request.predicate = NSPredicate(
+            format: "name == %@", name
+        )
+
+        if let existing = try viewContext.fetch(request).first {
+            return existing
+        }
+
+        let ingredient = Ingredient(context: viewContext)
+        ingredient.name = name
+
+        try viewContext.save()
+        return ingredient
+    }
 }

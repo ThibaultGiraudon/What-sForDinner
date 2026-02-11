@@ -60,4 +60,23 @@ struct CategoryRepository {
         try viewContext.save()
         return category
     }
+    
+    func fetchOrCreateCategory(name: String, emoji: String, color: String) throws -> Category {
+        let request = Category.fetchRequest()
+        request.predicate = NSPredicate(
+            format: "name == %@", name
+        )
+
+        if let existing = try viewContext.fetch(request).first {
+            return existing
+        }
+
+        let category = Category(context: viewContext)
+        category.name = name
+        category.emoji = emoji
+        category.color = color
+
+        try viewContext.save()
+        return category
+    }
 }

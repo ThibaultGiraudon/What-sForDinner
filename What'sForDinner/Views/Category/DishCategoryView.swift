@@ -74,6 +74,6 @@ struct DishCategoryView: View {
 
 #Preview {
     NavigationStack {
-        DishCategoryView(dishListVM: .init(), categoryListVM: .init(), category: DefaultData().category)
+        DishCategoryView(dishListVM: .init(), categoryListVM: .init(), category: CategoryListViewModel().categories.first!)
     }
 }

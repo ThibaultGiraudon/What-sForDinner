@@ -38,5 +38,10 @@ struct PersistenceController {
             }
         })
         container.viewContext.automaticallyMergesChangesFromParent = true
+        do {
+            try DefaultData(viewContext: container.viewContext).fillDB()
+        } catch {
+            print("An error occured while filling DB")
+        }
     }
 }

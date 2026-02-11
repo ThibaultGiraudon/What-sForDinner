@@ -51,6 +51,6 @@ struct RandomDishView: View {
 }
 
 #Preview {
-    RandomDishView(dish: DefaultData().dish)
+    RandomDishView(dish: DishListViewModel().dishes.first!)
         .padding()
 }

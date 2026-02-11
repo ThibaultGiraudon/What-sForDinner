@@ -27,5 +27,5 @@ struct DishImageView: View {
 }
 
 #Preview {
-    DishImageView(dish: DefaultData().dish)
+    DishImageView(dish: DishListViewModel().dishes.first!)
 }

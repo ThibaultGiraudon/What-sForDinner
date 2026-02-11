@@ -125,6 +125,6 @@ struct DishContentView: View {
 
 #Preview {
     ScrollView {
-        DishContentView(dishListVM: DishListViewModel(), dish: DefaultData().dish)
+        DishContentView(dishListVM: DishListViewModel(), dish: DishListViewModel().dishes.first!)
     }
 }

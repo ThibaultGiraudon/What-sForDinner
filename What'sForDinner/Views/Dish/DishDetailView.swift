@@ -56,6 +56,6 @@ struct DishDetailView: View {
 
 #Preview {
     NavigationStack {
-        DishDetailView(dishListVM: DishListViewModel(), dish: DefaultData().dish)
+        DishDetailView(dishListVM: DishListViewModel(), dish: DishListViewModel().dishes.first!)
     }
 }
