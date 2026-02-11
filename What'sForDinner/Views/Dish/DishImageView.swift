@@ -9,6 +9,8 @@ import SwiftUI
 
 struct DishImageView: View {
     @ObservedObject var dish: Dish
+    var width: CGFloat = 0
+    var heigt: CGFloat = 300
     var body: some View {
         GeometryReader { geo in
             Group {
@@ -21,7 +23,7 @@ struct DishImageView: View {
                 }
             }
             .aspectRatio(contentMode: .fill)
-            .frame(maxWidth: geo.size.width, maxHeight: 300)
+            .frame(width: width == 0 ? geo.size.width : width, height: heigt)
             .clipped()
         }
     }

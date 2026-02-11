@@ -11,20 +11,9 @@ struct DishRowView: View {
     @ObservedObject var dish: Dish
     var body: some View {
         HStack {
-            Group {
-                if let imageData = dish.imageData, let uiImage = UIImage(data: imageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFit()
-                } else {
-                    Image("recipes-placeholder")
-                        .resizable()
-                        .scaledToFit()
-                }
-            }
-            .aspectRatio(contentMode: .fill)
-            .frame(width: 170, height: 120)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
+            DishImageView(dish: dish, width: 170, heigt: 120)
+                .frame(width: 170, height: 120)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
             VStack(alignment: .leading, spacing: 10) {
                 Text(dish.nameValue)
                     .font(.title2)
