@@ -11,20 +11,23 @@ struct RandomDishView: View {
     @ObservedObject var dish: Dish
     var body: some View {
         VStack {
-            Group {
-                if let imageData = dish.imageData, let uiImage = UIImage(data: imageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFit()
-                } else {
-                    Image("recipes-placeholder")
-                        .resizable()
-                        .scaledToFit()
+            GeometryReader { geo in
+                Group {
+                    if let imageData = dish.imageData, let uiImage = UIImage(data: imageData) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFit()
+                    } else {
+                        Image("recipes-placeholder")
+                            .resizable()
+                            .scaledToFit()
+                    }
                 }
+                .aspectRatio(contentMode: .fill)
+                .frame(maxWidth: geo.size.width, maxHeight: 220)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
             }
-            .aspectRatio(contentMode: .fill)
             .frame(height: 220)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
             .shadow(radius: 5)
             .overlay(alignment: .topLeading) {
                 Text(dish.nameValue)

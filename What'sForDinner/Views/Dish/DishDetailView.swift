@@ -18,7 +18,7 @@ struct DishDetailView: View {
         ZStack(alignment: .top) {
             DishImageView(dish: dish)
             
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 Color.clear
                     .frame(height: 250)
                 DishContentView(dishListVM: dishListVM, dish: dish)

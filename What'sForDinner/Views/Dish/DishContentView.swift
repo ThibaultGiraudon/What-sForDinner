@@ -27,14 +27,16 @@ struct DishContentView: View {
                     .foregroundStyle(Color(UIColor.systemGray5))
             }
             
-            ScrollView(.horizontal) {
-                ForEach(dish.categoriesValue, id: \.self) { category in
-                    Text("\(category.emojiValue) \(category.nameValue)")
-                        .padding(5)
-                        .background {
-                            Capsule()
-                                .foregroundStyle(category.colorValue.opacity(0.8))
-                        }
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(dish.categoriesValue, id: \.self) { category in
+                        Text("\(category.emojiValue) \(category.nameValue)")
+                            .padding(5)
+                            .background {
+                                Capsule()
+                                    .foregroundStyle(category.colorValue.opacity(0.8))
+                            }
+                    }
                 }
             }
             .padding(.bottom)

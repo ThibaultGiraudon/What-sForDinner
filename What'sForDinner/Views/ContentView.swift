@@ -150,7 +150,7 @@ struct ContentView: View {
             Text("Catégories")
                 .fontWeight(.semibold)
             
-            ScrollView(.horizontal) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ForEach(categoryListVM.categories, id: \.self) { category in
                         NavigationLink {

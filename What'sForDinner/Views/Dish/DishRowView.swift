@@ -28,6 +28,7 @@ struct DishRowView: View {
             VStack(alignment: .leading, spacing: 10) {
                 Text(dish.nameValue)
                     .font(.title2)
+                    .multilineTextAlignment(.leading)
                 HStack {
                     Image(systemName: "timer")
                     Text("\(dish.time) min")
