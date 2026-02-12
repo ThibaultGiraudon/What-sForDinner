@@ -32,7 +32,7 @@ struct DishCategoryView: View {
             }
             .padding()
             List {
-                ForEach(dishListVM.dishes(in: category), id: \.self) { dish in
+                ForEach(dishListVM.dishes(in: category), id: \.objectID) { dish in
                     NavigationLink {
                         DishDetailView(dishListVM: dishListVM, dish: dish)
                     } label: {

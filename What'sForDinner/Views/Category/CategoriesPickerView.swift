@@ -16,7 +16,7 @@ struct CategoriesPickerView: View {
             
             SearchField(searchText: $categoryListVM.searchText)
             
-            ForEach(categoryListVM.filteredCategories.filter( { !$0.isSystem }), id: \.self) { category in
+            ForEach(categoryListVM.filteredCategories.filter( { !$0.isSystem }), id: \.objectID) { category in
                 HStack {
                     Text(category.emojiValue)
                         .padding(5)

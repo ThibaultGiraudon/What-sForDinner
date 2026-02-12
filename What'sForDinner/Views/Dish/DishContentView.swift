@@ -29,7 +29,7 @@ struct DishContentView: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(dish.categoriesValue, id: \.self) { category in
+                    ForEach(dish.categoriesValue, id: \.objectID) { category in
                         Text("\(category.emojiValue) \(category.nameValue)")
                             .padding(5)
                             .background {
@@ -47,7 +47,7 @@ struct DishContentView: View {
                 Text("Ingredients")
                     .font(.title3.bold())
                 Group {
-                    ForEach(dish.ingredientsValue, id: \.self) { ingredient in
+                    ForEach(dish.ingredientsValue, id: \.objectID) { ingredient in
                         HStack {
                             Text(ingredient.nameValue)
                             Spacer()

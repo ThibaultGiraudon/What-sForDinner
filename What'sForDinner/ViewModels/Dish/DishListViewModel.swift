@@ -77,7 +77,7 @@ class DishListViewModel: ObservableObject {
     func delete(_ dish: Dish) {
         do {
             try dishRepository.delete(dish)
-            if let index = dishes.firstIndex(where: {$0 == dish}) {
+            if let index = dishes.firstIndex(where: { $0.objectID == dish.objectID }) {
                 dishes.remove(at: index)
             }
         } catch {

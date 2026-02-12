@@ -36,7 +36,7 @@ struct AllDishesView: View {
                         }
                 }
             }
-            ForEach(dishListVM.filteredDishes, id: \.self) { dish in
+            ForEach(dishListVM.filteredDishes, id: \.objectID) { dish in
                 NavigationLink {
                     DishDetailView(dishListVM: dishListVM, dish: dish)
                 } label: {

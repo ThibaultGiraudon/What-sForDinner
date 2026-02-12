@@ -136,7 +136,7 @@ struct ContentView: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(categoryListVM.categories, id: \.self) { category in
+                    ForEach(categoryListVM.categories, id: \.objectID) { category in
                         NavigationLink {
                             DishCategoryView(dishListVM: dishListVM, categoryListVM: categoryListVM, category: category)
                         } label: {

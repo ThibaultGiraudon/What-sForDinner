@@ -30,7 +30,7 @@ struct IngredientsPickerView: View {
         List {
             SearchField(searchText: $ingredientListVM.searchText)
             
-            ForEach(ingredientListVM.filteredIngredients, id: \.self) { ingredient in
+            ForEach(ingredientListVM.filteredIngredients, id: \.objectID) { ingredient in
                 HStack {
                     if selection.contains(ingredient) {
                         Image(systemName: "largecircle.fill.circle")
@@ -40,7 +40,7 @@ struct IngredientsPickerView: View {
                             .foregroundStyle(.gray)
                     }
                     
-                    Text(ingredient.name ?? "")
+                    Text(ingredient.nameValue)
                     Spacer()
                 }
                 .contentShape(Rectangle())
