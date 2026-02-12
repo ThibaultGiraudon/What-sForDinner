@@ -78,6 +78,7 @@ struct DishContentView: View {
                         Image(systemName: "chevron.right")
                             .rotationEffect(isExpending ? .degrees(90) : .zero)
                     }
+                    .foregroundStyle(.black)
                 }
                 if let note = dish.note, !note.isEmpty {
                     VStack {
@@ -97,7 +98,6 @@ struct DishContentView: View {
             Spacer()
             
             if let link = dish.link, let url = URL(string: link) {
-                let linearGradient = LinearGradient(colors: [.blue, .teal], startPoint: .topLeading, endPoint: .bottomTrailing)
                 Link(destination: url) {
                     HStack {
                         Spacer()
@@ -110,7 +110,7 @@ struct DishContentView: View {
                     .tint(.white)
                     .background {
                         RoundedRectangle(cornerRadius: 12)
-                            .foregroundStyle(linearGradient)
+                            .foregroundStyle(.teal)
                     }
                 }
             }
